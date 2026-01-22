@@ -1,0 +1,130 @@
+apiVersion: blueprints.cloud.google.com/v1alpha1
+kind: BlueprintMetadata
+metadata:
+  name: marketplace-tools-display
+  annotations:
+    autogenSpecType: SINGLE_VM
+    config.kubernetes.io/local-config: "true"
+spec:
+  info:
+    title: openvpn-as-gcp-terraform-deploy
+    source:
+      repo: https://github.com/OpenVPN/openvpn-as-gcp-terraform-deploy.git
+      sourceType: git
+      dir: /
+  ui:
+    input:
+      variables:
+        boot_disk_size:
+          name: boot_disk_size
+          title: Boot disk size in GB
+          max: 10000
+          section: boot_disk
+          xGoogleProperty:
+            type: ET_GCE_DISK_SIZE
+            gceDiskSize:
+              diskTypeVariable: boot_disk_type
+        boot_disk_type:
+          name: boot_disk_type
+          title: Boot disk type
+          section: boot_disk
+          xGoogleProperty:
+            type: ET_GCE_DISK_TYPE
+            zoneProperty: zone
+        enable_tcp_22:
+          name: enable_tcp_22
+          title: Allow TCP port 22 traffic from the Internet
+          section: networking
+        enable_tcp_443:
+          name: enable_tcp_443
+          title: Allow HTTPS traffic from the Internet
+          section: networking
+        enable_tcp_943:
+          name: enable_tcp_943
+          title: Allow TCP port 943 traffic from the Internet
+          section: networking
+        enable_udp_1194:
+          name: enable_udp_1194
+          title: Allow UDP port 1194 traffic from the Internet
+          section: networking
+        existing_subnet_name:
+          name: existing_subnet_name
+          title: Existing Subnet Name
+          section: networking
+        existing_vpc_name:
+          name: existing_vpc_name
+          title: Existing Vpc Name
+          section: networking
+        goog_cm_deployment_name:
+          name: goog_cm_deployment_name
+          title: Goog Cm Deployment Name
+        ip_forward:
+          name: ip_forward
+          title: IP forwarding
+          tooltip: Forwarding allows the instance to help route packets. <a href="https://cloud.google.com/compute/docs/networking#canipforward">Learn more</a>
+          section: networking
+        machine_type:
+          name: machine_type
+          title: Machine type
+          xGoogleProperty:
+            type: ET_GCE_MACHINE_TYPE
+            zoneProperty: zone
+            gceMachineType:
+              minCpu: 1
+              minRamGb: 4
+        project_id:
+          name: project_id
+          title: Project Id
+          invisible: true
+        region:
+          name: region
+          title: Region
+          xGoogleProperty:
+            type: ET_GCE_REGION
+        source_image:
+          name: source_image
+          title: Image version
+          xGoogleProperty:
+            type: ET_GCE_DISK_IMAGE
+          enumValueLabels:
+            - label: ubuntu-2404-20260122
+              value: projects/openvpn-access-server-200800/global/images/ubuntu-2404-20260122
+        subnet_ip_cidr_range:
+          name: subnet_ip_cidr_range
+          title: Subnet Ip Cidr Range
+          section: networking
+        tcp_22_source_ranges:
+          name: tcp_22_source_ranges
+          title: Source IP ranges for TCP port 22 traffic
+          tooltip: Traffic is only allowed from sources within these IP address ranges. Use CIDR notation when entering ranges. <a href="https://cloud.google.com/compute/docs/networking#firewalls">Learn more</a>
+          placeholder: 0.0.0.0/0, 192.169.0.2/24
+          section: networking
+        tcp_443_source_ranges:
+          name: tcp_443_source_ranges
+          title: Source IP ranges for HTTPS traffic
+          tooltip: Traffic is only allowed from sources within these IP address ranges. Use CIDR notation when entering ranges. <a href="https://cloud.google.com/compute/docs/networking#firewalls">Learn more</a>
+          placeholder: 0.0.0.0/0, 192.169.0.2/24
+          section: networking
+        tcp_943_source_ranges:
+          name: tcp_943_source_ranges
+          title: Source IP ranges for TCP port 943 traffic
+          tooltip: Traffic is only allowed from sources within these IP address ranges. Use CIDR notation when entering ranges. <a href="https://cloud.google.com/compute/docs/networking#firewalls">Learn more</a>
+          placeholder: 0.0.0.0/0, 192.169.0.2/24
+          section: networking
+        udp_1194_source_ranges:
+          name: udp_1194_source_ranges
+          title: Source IP ranges for UDP port 1194 traffic
+          tooltip: Traffic is only allowed from sources within these IP address ranges. Use CIDR notation when entering ranges. <a href="https://cloud.google.com/compute/docs/networking#firewalls">Learn more</a>
+          placeholder: 0.0.0.0/0, 192.169.0.2/24
+          section: networking
+        zone:
+          name: zone
+          title: Zone
+          xGoogleProperty:
+            type: ET_GCE_ZONE
+      sections:
+        - name: boot_disk
+          title: Boot Disk
+          tooltip: Each instance requires a disk to boot from.
+        - name: networking
+          title: Networking

@@ -13,7 +13,7 @@ variable "goog_cm_deployment_name" {
 variable "source_image" {
   description = "The image name for the disk for the VM instance."
   type        = string
-  default     = "ubuntu-os-cloud/ubuntu-2404-lts-amd64"
+  default     = "projects/openvpn-access-server-200800/global/images/ubuntu-2404-20260122"
 }
 
 variable "region" {
@@ -64,10 +64,58 @@ variable "subnet_ip_cidr_range" {
   default     = "10.10.0.0/20"
 }
 
-variable "inbound_source_ranges" {
-  description = "The source IP ranges to allow inbound traffic from"
-  type        = list(string)
-  default     = ["0.0.0.0/0"]
+variable "ip_forward" {
+  description = "Whether to allow sending and receiving of packets with non-matching source or destination IPs."
+  type        = bool
+  default     = false
+}
+
+variable "enable_tcp_443" {
+  description = "Allow HTTPS traffic from the Internet"
+  type        = bool
+  default     = true
+}
+
+variable "tcp_443_source_ranges" {
+  description = "Source IP ranges for HTTPS traffic"
+  type        = string
+  default     = ""
+}
+
+variable "enable_tcp_943" {
+  description = "Allow TCP port 943 traffic from the Internet"
+  type        = bool
+  default     = true
+}
+
+variable "tcp_943_source_ranges" {
+  description = "Source IP ranges for TCP port 943 traffic"
+  type        = string
+  default     = ""
+}
+
+variable "enable_udp_1194" {
+  description = "Allow UDP port 1194 traffic from the Internet"
+  type        = bool
+  default     = true
+}
+
+variable "udp_1194_source_ranges" {
+  description = "Source IP ranges for UDP port 1194 traffic"
+  type        = string
+  default     = ""
+}
+
+variable "enable_tcp_22" {
+  description = "Allow TCP port 22 traffic from the Internet"
+  type        = bool
+  default     = true
+}
+
+variable "tcp_22_source_ranges" {
+  description = "Source IP ranges for TCP port 22 traffic"
+  type        = string
+  default     = ""
 }
 
 variable "env_vars" {

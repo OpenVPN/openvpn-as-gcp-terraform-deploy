@@ -1,0 +1,122 @@
+apiVersion: blueprints.cloud.google.com/v1alpha1
+kind: BlueprintMetadata
+metadata:
+  name: marketplace-tools
+  annotations:
+    autogenSpecType: SINGLE_VM
+    config.kubernetes.io/local-config: "true"
+spec:
+  info:
+    title: openvpn-as-gcp-terraform-deploy
+    source:
+      repo: https://github.com/OpenVPN/openvpn-as-gcp-terraform-deploy.git
+      sourceType: git
+      dir: /
+    version: 3.0.1
+    actuationTool:
+      flavor: Terraform
+      version: ">= 1.2"
+    description: {}
+    softwareGroups:
+      - type: SG_OS
+        software:
+          - title: Ubuntu
+            version: 24.04 LTS
+  content: {}
+  interfaces:
+    variables:
+      - name: project_id
+        description: The ID of the project in which to provision resources.
+        varType: string
+        required: true
+      - name: goog_cm_deployment_name
+        description: The name of the deployment and VM instance.
+        varType: string
+        defaultValue: openvpn-as
+      - name: source_image
+        description: The image name for the disk for the VM instance.
+        varType: string
+        defaultValue: projects/openvpn-access-server-200800/global/images/ubuntu-2404-20260122
+      - name: region
+        description: The region for the solution to be deployed.
+        varType: string
+        defaultValue: us-west1
+      - name: zone
+        description: The zone for the solution to be deployed.
+        varType: string
+        defaultValue: us-west1-c
+      - name: machine_type
+        description: The machine type to create, e.g. e2-small
+        varType: string
+        defaultValue: n2d-standard-2
+      - name: boot_disk_type
+        description: The boot disk type for the VM instance.
+        varType: string
+        defaultValue: pd-balanced
+      - name: boot_disk_size
+        description: The boot disk size for the VM instance in GBs
+        varType: number
+        defaultValue: 20
+      - name: existing_vpc_name
+        description: The name of the existing VPC to use (leave empty to create a new VPC)
+        varType: string
+        defaultValue: ""
+      - name: existing_subnet_name
+        description: The name of the existing subnet to use (only used when 'existing_vpc_name' is set)
+        varType: string
+        defaultValue: ""
+      - name: subnet_ip_cidr_range
+        description: The IP CIDR range for new subnet
+        varType: string
+        defaultValue: 10.10.0.0/20
+      - name: ip_forward
+        description: Whether to allow sending and receiving of packets with non-matching source or destination IPs.
+        varType: bool
+        defaultValue: false
+      - name: enable_tcp_443
+        description: Allow HTTPS (VPN traffic)
+        varType: bool
+        defaultValue: true
+      - name: tcp_443_source_ranges
+        description: Source IP ranges for HTTPS traffic
+        varType: string
+        defaultValue: ""
+      - name: enable_tcp_943
+        description: Allow TCP port 943 (Admin/User GUI traffic)
+        varType: bool
+        defaultValue: true
+      - name: tcp_943_source_ranges
+        description: Source IP ranges for TCP port 943 traffic
+        varType: string
+        defaultValue: ""
+      - name: enable_udp_1194
+        description: Allow UDP port 1194 (VPN traffic)
+        varType: bool
+        defaultValue: true
+      - name: udp_1194_source_ranges
+        description: Source IP ranges for UDP port 1194 traffic
+        varType: string
+        defaultValue: ""
+      - name: enable_tcp_22
+        description: Allow HTTPS (VPN traffic)
+        varType: bool
+        defaultValue: true
+      - name: tcp_22_source_ranges
+        description: Source IP ranges for TCP port 22 traffic
+        varType: string
+        defaultValue: ""
+      - name: env_vars
+        description: Environment variables to inject into the VM
+        varType: map(string)
+        defaultValue: {}
+    outputs:
+      - name: admin_password
+        description: Password for Admin.
+      - name: admin_url
+        description: Admin Url
+      - name: admin_user
+        description: Username for Admin password.
+      - name: instance_self_link
+        description: Self-link for the compute instance.
+      - name: site_url
+        description: Site Url

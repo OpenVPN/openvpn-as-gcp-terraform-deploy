@@ -37,7 +37,9 @@ resource "google_compute_instance" "instance" {
     access_config {}
   }
 
-  metadata = local.env_vars
+  metadata = {
+    user_data_map = jsonencode(local.env_vars)
+  }
 
   metadata_startup_script = <<-EOF
     #!/bin/bash

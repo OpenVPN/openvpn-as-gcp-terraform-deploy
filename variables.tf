@@ -15,7 +15,7 @@ variable "source_image" {
   type        = string
   // Ubuntu 24.04 image with BYOL for GCP Marketplace
   // For Terraform deployments any Access Server supported image can be used
-  default     = "projects/openvpn-access-server-200800/global/images/ubuntu-2404-20260122"
+  default     = "projects/openvpn-access-server-200800/global/images/ubuntu-2404-20260319"
 }
 
 variable "region" {

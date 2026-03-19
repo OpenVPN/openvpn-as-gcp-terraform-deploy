@@ -44,7 +44,7 @@ resource "google_compute_instance" "instance" {
   metadata_startup_script = <<-EOF
     #!/bin/bash
 
-    bash -c 'bash <(curl -fsS https://packages.openvpn.net/as/install.sh) --yes --as-version=3.0.2'
+    bash -c 'bash <(curl -fsS https://packages.openvpn.net/as/install.sh) --yes --as-version=3.1.0'
     apt-mark hold openvpn-as
 
     /usr/bin/ovpn-init --gcp --batch --force

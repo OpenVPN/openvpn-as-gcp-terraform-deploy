@@ -44,10 +44,19 @@ resource "google_compute_instance" "instance" {
   metadata_startup_script = <<-EOF
     #!/bin/bash
 
-    bash -c 'bash <(curl -fsS https://packages.openvpn.net/as/install.sh) --yes --as-version=3.1.0'
+    bash -c 'OVPN_INIT_MANUAL=true bash <(curl -fsS https://packages.openvpn.net/as/install.sh) --yes --as-version=3.1.0'
     apt-mark hold openvpn-as
 
     /usr/bin/ovpn-init --gcp --batch --force
+
+    until sacli status 2>/dev/null |grep -q '"api": "on"'
+    do
+        sleep 2
+    done
+    sacli --key "dnsproxy.mode" --value "always" ConfigPut
+    sacli --key "vpn.client.routing.reroute_dns" --value "true" ConfigPut
+    sacli --key "vpn.client.routing.reroute_gw" --value "true" ConfigPut
+    sacli start
 
     . /usr/local/openvpn_as/etc/VERSION
 

@@ -60,8 +60,11 @@ resource "google_compute_instance" "instance" {
 
     . /usr/local/openvpn_as/etc/VERSION
 
-    sed -i 's#^\(OpenVPN Access Server Appliance \)\( .*\)#\1'"$AS_VERSION"' \\n \\l#g' /etc/issue
-    sed -i 's#^\(echo "Welcome to OpenVPN Access Server Appliance \)\(.*\)#\1'"$AS_VERSION"'"#g' /etc/update-motd.d/00-header
+    echo "OpenVPN Access Server Appliance $AS_VERSION \n \l" >/etc/issue
+    cat >/etc/update-motd.d/00-header <<HEADER
+#!/bin/sh
+echo "Welcome to OpenVPN Access Server Appliance $AS_VERSION"
+HEADER
   EOF
 }
 

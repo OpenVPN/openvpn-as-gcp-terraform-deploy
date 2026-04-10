@@ -44,6 +44,10 @@ resource "google_compute_instance" "instance" {
   metadata_startup_script = <<-EOF
     #!/bin/bash
 
+    if [ -f /usr/local/openvpn_as/etc/as.conf ]; then
+        exit 0
+    fi
+
     bash -c 'OVPN_INIT_MANUAL=true bash <(curl -fsS https://packages.openvpn.net/as/install.sh) --yes --as-version=3.1.0'
     apt-mark hold openvpn-as
 

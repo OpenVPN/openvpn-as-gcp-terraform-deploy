@@ -1,21 +1,26 @@
 locals {
-  has_hash     = length(lookup(var.env_vars, "admin_pw_hash", "")) > 0
-  vm_public_ip = google_compute_instance.instance.network_interface[0].access_config[0].nat_ip
-  host_url     = lookup(
+  has_hash       = length(lookup(var.env_vars, "admin_pw_hash", "")) > 0
+  vm_public_ip   = google_compute_instance.instance.network_interface[0].access_config[0].nat_ip
+  host_url       = lookup(
     var.env_vars,
     "access_server_link.initial_configuration.deployment_name",
-    local.vm_public_ip
+    "${local.vm_public_ip}:443"
+  )
+  host_url_admin = lookup(
+    var.env_vars,
+    "access_server_link.initial_configuration.deployment_name",
+    "${local.vm_public_ip}:943"
   )
 }
 
 output "site_url" {
   description = "Site Url"
-  value       = "https://${local.host_url}:443/"
+  value       = "https://${local.host_url}/"
 }
 
 output "admin_url" {
   description = "Admin Url"
-  value       = "https://${local.host_url}:943/admin"
+  value       = "https://${local.host_url_admin}/admin"
 }
 
 output "admin_user" {

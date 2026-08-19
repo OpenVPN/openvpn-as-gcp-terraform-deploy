@@ -26,3 +26,9 @@ resource "google_compute_subnetwork" "subnet" {
   network       = google_compute_network.vpc[0].id
   ip_cidr_range = var.subnet_ip_cidr_range
 }
+
+resource "google_compute_address" "static_ip" {
+  count  = var.enable_static_ip ? 1 : 0
+  name   = "${var.goog_cm_deployment_name}-static-ip"
+  region = var.region
+}

@@ -36,6 +36,16 @@ spec:
           name: deletion_protection
           title: Enable deletion protection
           invisible: true
+        enable_letsencrypt:
+          name: enable_letsencrypt
+          title: Enable Let's Encrypt certificate
+          tooltip: Automatically request a trusted TLS certificate bound to this instance's public IP address. Requires TCP port 443 to stay open (see "Allow HTTPS" below). If the public IP later changes, the certificate must be re-requested manually.
+          section: networking
+        enable_static_ip:
+          name: enable_static_ip
+          title: Use a static external IP address
+          tooltip: Recommended, especially with Let's Encrypt enabled - an ephemeral IP can change when the instance is stopped and started, which invalidates an issued certificate.
+          section: networking
         enable_tcp_22:
           name: enable_tcp_22
           title: Allow TCP port 22 (SSH traffic)

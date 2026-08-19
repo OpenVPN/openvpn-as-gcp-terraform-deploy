@@ -76,6 +76,12 @@ variable "deletion_protection" {
   default     = false
 }
 
+variable "enable_static_ip" {
+  description = "Assign a static external IP address to the VM instance. Recommended, especially with 'enable_letsencrypt' - ephemeral IP addresses can change when the instance is stopped and started, invalidating an issued certificate."
+  type        = bool
+  default     = true
+}
+
 variable "enable_tcp_443" {
   description = "Allow HTTPS (VPN traffic)"
   type        = bool
@@ -86,6 +92,12 @@ variable "tcp_443_source_ranges" {
   description = "Source IP ranges for HTTPS traffic"
   type        = string
   default     = ""
+}
+
+variable "enable_letsencrypt" {
+  description = "Automatically request and install a Let's Encrypt TLS certificate for the instance's public IP address. Requires 'enable_tcp_443' to remain true."
+  type        = bool
+  default     = true
 }
 
 variable "enable_tcp_943" {

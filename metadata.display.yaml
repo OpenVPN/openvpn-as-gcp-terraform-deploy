@@ -18,6 +18,7 @@ spec:
         boot_disk_size:
           name: boot_disk_size
           title: Boot disk size in GB
+          min: 20
           max: 10000
           section: boot_disk
           xGoogleProperty:

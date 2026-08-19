@@ -102,7 +102,7 @@ spec:
         varType: string
         defaultValue: ""
       - name: enable_tcp_22
-        description: Allow HTTPS (VPN traffic)
+        description: Allow TCP port 22 (SSH traffic)
         varType: bool
         defaultValue: true
       - name: tcp_22_source_ranges

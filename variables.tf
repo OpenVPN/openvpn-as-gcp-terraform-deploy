@@ -72,6 +72,12 @@ variable "ip_forward" {
   default     = false
 }
 
+variable "deletion_protection" {
+  description = "Whether to enable deletion protection on the VM instance. When true, the instance cannot be deleted until this is set back to false."
+  type        = bool
+  default     = false
+}
+
 variable "enable_tcp_443" {
   description = "Allow HTTPS (VPN traffic)"
   type        = bool

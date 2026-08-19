@@ -73,6 +73,10 @@ spec:
         description: Whether to allow sending and receiving of packets with non-matching source or destination IPs.
         varType: bool
         defaultValue: false
+      - name: deletion_protection
+        description: Whether to enable deletion protection on the VM instance. When true, the instance cannot be deleted until this is set back to false.
+        varType: bool
+        defaultValue: false
       - name: enable_tcp_443
         description: Allow HTTPS (VPN traffic)
         varType: bool

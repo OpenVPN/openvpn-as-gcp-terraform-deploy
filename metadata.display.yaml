@@ -31,6 +31,10 @@ spec:
           xGoogleProperty:
             type: ET_GCE_DISK_TYPE
             zoneProperty: zone
+        deletion_protection:
+          name: deletion_protection
+          title: Enable deletion protection
+          invisible: true
         enable_tcp_22:
           name: enable_tcp_22
           title: Allow TCP port 22 (SSH traffic)

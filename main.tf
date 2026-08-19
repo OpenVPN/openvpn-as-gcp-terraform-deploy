@@ -29,7 +29,8 @@ resource "google_compute_instance" "instance" {
     }
   }
 
-  can_ip_forward = var.ip_forward
+  can_ip_forward      = var.ip_forward
+  deletion_protection = var.deletion_protection
 
   network_interface {
     subnetwork = local.create_vpc ? google_compute_subnetwork.subnet[0].id : data.google_compute_subnetwork.existing_subnet[0].id

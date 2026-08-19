@@ -13,9 +13,7 @@ variable "goog_cm_deployment_name" {
 variable "source_image" {
   description = "The image name for the disk for the VM instance."
   type        = string
-  // Ubuntu 24.04 image with BYOL for GCP Marketplace
-  // For Terraform deployments any Access Server supported image can be used
-  default     = "projects/openvpn-access-server-200800/global/images/ubuntu-2404-20260319"
+  default     = "ubuntu-os-cloud/ubuntu-2404-lts-amd64"
 }
 
 variable "region" {

@@ -36,7 +36,7 @@ spec:
       - name: source_image
         description: The image name for the disk for the VM instance.
         varType: string
-        defaultValue: projects/openvpn-access-server-200800/global/images/ubuntu-2404-20260122
+        defaultValue: ubuntu-os-cloud/ubuntu-2404-lts-amd64
       - name: region
         description: The region for the solution to be deployed.
         varType: string

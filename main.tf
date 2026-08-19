@@ -29,16 +29,20 @@ resource "google_compute_instance" "instance" {
     }
   }
 
-  can_ip_forward = var.ip_forward
+  can_ip_forward      = var.ip_forward
+  deletion_protection = var.deletion_protection
 
   network_interface {
     subnetwork = local.create_vpc ? google_compute_subnetwork.subnet[0].id : data.google_compute_subnetwork.existing_subnet[0].id
 
-    access_config {}
+    access_config {
+      nat_ip = var.enable_static_ip ? google_compute_address.static_ip[0].address : null
+    }
   }
 
   metadata = {
-    user_data_map = jsonencode(local.env_vars)
+    user_data_map      = jsonencode(local.env_vars)
+    enable_letsencrypt = tostring(var.enable_letsencrypt)
   }
 
   metadata_startup_script = <<-EOF
@@ -48,19 +52,35 @@ resource "google_compute_instance" "instance" {
         exit 0
     fi
 
-    bash -c 'OVPN_INIT_MANUAL=true bash <(curl -fsS https://packages.openvpn.net/as/install.sh) --yes --as-version=3.1.0'
+    echo unattended-upgrades unattended-upgrades/enable_auto_updates boolean true | debconf-set-selections
+    dpkg-reconfigure -f noninteractive unattended-upgrades
+
+    bash -c 'OVPN_INIT_MANUAL=true bash <(curl -fsS https://packages.openvpn.net/as/install.sh) --yes --as-version=3.2.2'
     apt-mark hold openvpn-as
 
     /usr/bin/ovpn-init --gcp --batch --force
 
-    until sacli status 2>/dev/null |grep -q '"api": "on"'
+    until sacli status 2>/dev/null | grep -q '"api": "on"'
     do
         sleep 2
     done
     sacli --key "dnsproxy.mode" --value "always" ConfigPut
     sacli --key "vpn.client.routing.reroute_dns" --value "true" ConfigPut
     sacli --key "vpn.client.routing.reroute_gw" --value "true" ConfigPut
+
+    ENABLE_LETSENCRYPT=$(curl -s -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/enable_letsencrypt")
+    if [ "$ENABLE_LETSENCRYPT" = "true" ]; then
+        PUBLIC_IP=$(curl -s -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip")
+        sacli --key "acme.ip_addresses.0" --value "$PUBLIC_IP" ConfigPut
+        sacli --key "acme.cert_profile" --value "shortlived" ConfigPut
+    fi
+
     sacli start
+
+    if [ "$ENABLE_LETSENCRYPT" = "true" ]; then
+        echo y | sacli AcmeRegisterAccount
+        sacli AcmeRequestCertificate
+    fi
 
     . /usr/local/openvpn_as/etc/VERSION
 
@@ -70,6 +90,8 @@ resource "google_compute_instance" "instance" {
 echo "Welcome to OpenVPN Access Server Appliance $AS_VERSION"
 HEADER
   EOF
+
+  depends_on = [google_compute_firewall.tcp_443]
 }
 
 resource "google_compute_firewall" "tcp_443" {

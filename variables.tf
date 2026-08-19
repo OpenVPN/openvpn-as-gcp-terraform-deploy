@@ -13,9 +13,7 @@ variable "goog_cm_deployment_name" {
 variable "source_image" {
   description = "The image name for the disk for the VM instance."
   type        = string
-  // Ubuntu 24.04 image with BYOL for GCP Marketplace
-  // For Terraform deployments any Access Server supported image can be used
-  default     = "projects/openvpn-access-server-200800/global/images/ubuntu-2404-20260319"
+  default     = "ubuntu-os-cloud/ubuntu-2404-lts-amd64"
 }
 
 variable "region" {
@@ -72,6 +70,18 @@ variable "ip_forward" {
   default     = false
 }
 
+variable "deletion_protection" {
+  description = "Whether to enable deletion protection on the VM instance. When true, the instance cannot be deleted until this is set back to false."
+  type        = bool
+  default     = false
+}
+
+variable "enable_static_ip" {
+  description = "Assign a static external IP address to the VM instance. Recommended, especially with 'enable_letsencrypt' - ephemeral IP addresses can change when the instance is stopped and started, invalidating an issued certificate."
+  type        = bool
+  default     = true
+}
+
 variable "enable_tcp_443" {
   description = "Allow HTTPS (VPN traffic)"
   type        = bool
@@ -82,6 +92,12 @@ variable "tcp_443_source_ranges" {
   description = "Source IP ranges for HTTPS traffic"
   type        = string
   default     = ""
+}
+
+variable "enable_letsencrypt" {
+  description = "Automatically request and install a Let's Encrypt TLS certificate for the instance's public IP address. Requires 'enable_tcp_443' to remain true."
+  type        = bool
+  default     = true
 }
 
 variable "enable_tcp_943" {

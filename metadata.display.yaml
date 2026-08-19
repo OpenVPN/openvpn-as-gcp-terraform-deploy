@@ -18,6 +18,7 @@ spec:
         boot_disk_size:
           name: boot_disk_size
           title: Boot disk size in GB
+          min: 20
           max: 10000
           section: boot_disk
           xGoogleProperty:
@@ -31,6 +32,20 @@ spec:
           xGoogleProperty:
             type: ET_GCE_DISK_TYPE
             zoneProperty: zone
+        deletion_protection:
+          name: deletion_protection
+          title: Enable deletion protection
+          invisible: true
+        enable_letsencrypt:
+          name: enable_letsencrypt
+          title: Enable Let's Encrypt certificate
+          tooltip: Automatically request a trusted TLS certificate bound to this instance's public IP address. Requires TCP port 443 to stay open (see "Allow HTTPS" below). If the public IP later changes, the certificate must be re-requested manually.
+          section: networking
+        enable_static_ip:
+          name: enable_static_ip
+          title: Use a static external IP address
+          tooltip: Recommended, especially with Let's Encrypt enabled - an ephemeral IP can change when the instance is stopped and started, which invalidates an issued certificate.
+          section: networking
         enable_tcp_22:
           name: enable_tcp_22
           title: Allow TCP port 22 (SSH traffic)
@@ -87,8 +102,8 @@ spec:
           xGoogleProperty:
             type: ET_GCE_DISK_IMAGE
           enumValueLabels:
-            - label: ubuntu-2404-20260122
-              value: projects/openvpn-access-server-200800/global/images/ubuntu-2404-20260122
+            - label: ubuntu-2404-lts-amd64
+              value: ubuntu-os-cloud/ubuntu-2404-lts-amd64
         subnet_ip_cidr_range:
           name: subnet_ip_cidr_range
           title: Subnet Ip Cidr Range

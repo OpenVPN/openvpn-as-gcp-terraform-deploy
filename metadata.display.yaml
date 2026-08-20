@@ -38,7 +38,7 @@ spec:
           invisible: true
         enable_letsencrypt:
           name: enable_letsencrypt
-          title: Enable Let's Encrypt certificate
+          title: Enable Let's Encrypt certificate for the external IP address
           tooltip: Automatically request a trusted TLS certificate bound to this instance's public IP address. Requires TCP port 443 to stay open (see "Allow HTTPS" below). If the public IP later changes, the certificate must be re-requested manually.
           section: networking
         enable_static_ip:
@@ -64,11 +64,13 @@ spec:
           section: networking
         existing_subnet_name:
           name: existing_subnet_name
-          title: Existing Subnet Name
+          title: Existing subnet name
+          tooltip: Exact name of an existing subnet (not its self-link/path), in the same region you're deploying to. Leave blank to create a new VPC and subnet instead.
           section: networking
         existing_vpc_name:
           name: existing_vpc_name
-          title: Existing Vpc Name
+          title: Existing VPC name
+          tooltip: Exact name of an existing VPC network (not its self-link/path). Leave blank to create a new VPC instead.
           section: networking
         goog_cm_deployment_name:
           name: goog_cm_deployment_name
@@ -106,7 +108,8 @@ spec:
               value: ubuntu-os-cloud/ubuntu-2404-lts-amd64
         subnet_ip_cidr_range:
           name: subnet_ip_cidr_range
-          title: Subnet Ip Cidr Range
+          title: Subnet IP CIDR range
+          tooltip: Only used when creating a new VPC (leave "Existing VPC network" blank).
           section: networking
         tcp_22_source_ranges:
           name: tcp_22_source_ranges

@@ -12,7 +12,7 @@ spec:
       repo: https://github.com/OpenVPN/openvpn-as-gcp-terraform-deploy.git
       sourceType: git
       dir: /
-    version: 3.2.2
+    version: 3.2.3
     actuationTool:
       flavor: Terraform
       version: ">= 1.2"
@@ -22,7 +22,7 @@ spec:
         Access Server is a self-hosted business VPN and Zero Trust Network Access (ZTNA) software solution developed by the creators of the OpenVPN protocol. It gives your remote, hybrid, and in-office workforce protected access to VPC networks, private subnets, Cloud SQL instances, GKE clusters, and on-premises resources, without surrendering control of your infrastructure to a third-party service.
 
 
-        This deployment runs Access Server on a single Compute Engine VM running Ubuntu 24.04 LTS, within your own project and VPC network. Access Server is managed through a web-based Admin Web UI, with REST API and command-line configuration options for advanced administration, plus a client web portal for end users to download pre-configured connection profiles.
+        This deployment runs Access Server on a single Compute Engine VM running Ubuntu 26.04 LTS, within your own project and VPC network. Access Server is managed through a web-based Admin Web UI, with REST API and command-line configuration options for advanced administration, plus a client web portal for end users to download pre-configured connection profiles.
 
 
         Access Server supports Zero Trust access controls, including a Zero Trust Application Broker that scopes each connection to a single authorized app; flexible authentication with local accounts, PAM, RADIUS, LDAP, and SAML single sign-on with providers such as Google Workspace, Cloud Identity, Okta, and Microsoft Entra ID, plus built-in MFA via TOTP; and OpenVPN Data Channel Offload (DCO) for kernel-accelerated VPN throughput.
@@ -44,7 +44,7 @@ spec:
       - type: SG_OS
         software:
           - title: Ubuntu
-            version: 24.04 LTS
+            version: 26.04 LTS
   content: {}
   interfaces:
     variables:
@@ -59,7 +59,7 @@ spec:
       - name: source_image
         description: The image name for the disk for the VM instance.
         varType: string
-        defaultValue: ubuntu-os-cloud/ubuntu-2404-lts-amd64
+        defaultValue: ubuntu-os-cloud/ubuntu-2604-lts-amd64
       - name: region
         description: The region for the solution to be deployed.
         varType: string

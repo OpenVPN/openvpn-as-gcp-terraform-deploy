@@ -13,7 +13,7 @@ variable "goog_cm_deployment_name" {
 variable "source_image" {
   description = "The image name for the disk for the VM instance."
   type        = string
-  default     = "ubuntu-os-cloud/ubuntu-2404-lts-amd64"
+  default     = "ubuntu-os-cloud/ubuntu-2604-lts-amd64"
 }
 
 variable "region" {

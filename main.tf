@@ -55,7 +55,7 @@ resource "google_compute_instance" "instance" {
     echo unattended-upgrades unattended-upgrades/enable_auto_updates boolean true | debconf-set-selections
     dpkg-reconfigure -f noninteractive unattended-upgrades
 
-    bash -c 'OVPN_INIT_MANUAL=true bash <(curl -fsS https://packages.openvpn.net/as/install.sh) --yes --as-version=3.2.2'
+    bash -c 'OVPN_INIT_MANUAL=true bash <(curl -fsS https://packages.openvpn.net/as/install.sh) --yes --as-version=3.2.3'
     apt-mark hold openvpn-as
 
     /usr/bin/ovpn-init --gcp --batch --force
@@ -65,8 +65,6 @@ resource "google_compute_instance" "instance" {
         sleep 2
     done
     sacli --key "dnsproxy.mode" --value "always" ConfigPut
-    sacli --key "vpn.client.routing.reroute_dns" --value "true" ConfigPut
-    sacli --key "vpn.client.routing.reroute_gw" --value "true" ConfigPut
 
     ENABLE_LETSENCRYPT=$(curl -s -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/enable_letsencrypt")
     if [ "$ENABLE_LETSENCRYPT" = "true" ]; then

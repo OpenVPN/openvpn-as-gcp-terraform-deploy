@@ -55,7 +55,7 @@ resource "google_compute_instance" "instance" {
     echo unattended-upgrades unattended-upgrades/enable_auto_updates boolean true | debconf-set-selections
     dpkg-reconfigure -f noninteractive unattended-upgrades
 
-    bash -c 'OVPN_INIT_MANUAL=true bash <(curl -fsS https://packages.openvpn.net/as/install.sh) --yes --as-version=3.2.3'
+    bash -c 'OVPN_INIT_MANUAL=true bash <(curl -fsS https://packages.openvpn.net/as/install.sh) --yes --as-version=3.2.4'
     apt-mark hold openvpn-as
 
     /usr/bin/ovpn-init --gcp --batch --force

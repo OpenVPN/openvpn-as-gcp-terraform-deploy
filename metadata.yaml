@@ -12,7 +12,7 @@ spec:
       repo: https://github.com/OpenVPN/openvpn-as-gcp-terraform-deploy.git
       sourceType: git
       dir: /
-    version: 3.2.3
+    version: 3.2.4
     actuationTool:
       flavor: Terraform
       version: ">= 1.2"

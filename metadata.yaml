@@ -140,6 +140,10 @@ spec:
         description: Source IP ranges for TCP port 22 traffic
         varType: string
         defaultValue: ""
+      - name: activation_key
+        description: Access Server activation key. Leave empty to use the default zero connections license.
+        varType: string
+        defaultValue: ""
       - name: env_vars
         description: Environment variables to inject into the VM
         varType: map(string)

@@ -3,8 +3,12 @@ provider "google" {
 }
 
 locals {
-  admin_pw = random_password.admin.result
+  admin_pw        = random_password.admin.result
+  default_license = "ewogICJub25jZSI6ICJGMzJFMjczMTAwRTVCM0YwRjlENDgxRTk2NENFNzU0MUU3QjNGMDYwRDYwNDM1ODE0MUJFRUUzNTYwMjlEMjhEIiwKICAic3Via2V5IjogIkRPTk9UUkVNT1ZFcE9UZEdNRmRLR09pX0dDUFpFUk9DT05OTnBUSXVmX2E0ZDFiYTcwY2FiMzViNTgwYTg5ZDU0NWYxOGNjNGJiN2IzZTFjMGYiLAogICJpYXQiOiAxNzkyMDY3OTk3Cn0="
   env_vars = merge(
+    {
+      license = length(trimspace(var.activation_key)) > 0 ? trimspace(var.activation_key) : local.default_license
+    },
     var.env_vars,
     length(lookup(var.env_vars, "admin_pw", "")) == 0 ? {
       admin_pw = local.admin_pw

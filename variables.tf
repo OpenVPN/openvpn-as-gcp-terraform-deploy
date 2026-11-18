@@ -136,6 +136,17 @@ variable "tcp_22_source_ranges" {
   default     = ""
 }
 
+variable "activation_key" {
+  description = "Access Server activation key. Leave empty to use the default zero connections license."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[A-Za-z0-9_.+/=-]*$", trimspace(var.activation_key)))
+    error_message = "activation_key must contain only letters, digits, and the symbols _ . + / = -"
+  }
+}
+
 variable "env_vars" {
   description = "Environment variables to inject into the VM"
   type        = map(string)

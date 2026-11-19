@@ -52,6 +52,16 @@ spec:
           title: Use a static external IP address
           tooltip: Recommended, especially with Let's Encrypt enabled - an ephemeral IP can change when the instance is stopped and started, which invalidates an issued certificate.
           section: networking
+        network_tier:
+          name: network_tier
+          title: Network service tier
+          tooltip: 'Premium (recommended): traffic uses Google''s global private network for most of its path. It gives better speed and lower latency, especially when VPN users connect from many regions or far from this region. Standard: traffic uses the public internet for most of its path. It costs less, and it fits best when most VPN users are close to the region you deploy in. Performance can vary more. Choose Premium if you are not sure. <a href="https://cloud.google.com/network-tiers/docs/overview">Learn more</a>'
+          section: networking
+          enumValueLabels:
+            - label: Premium
+              value: PREMIUM
+            - label: Standard
+              value: STANDARD
         enable_tcp_22:
           name: enable_tcp_22
           title: Allow TCP port 22 (SSH traffic)

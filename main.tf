@@ -46,7 +46,8 @@ resource "google_compute_instance" "instance" {
     subnetwork = local.create_vpc ? google_compute_subnetwork.subnet[0].id : data.google_compute_subnetwork.existing_subnet[0].id
 
     access_config {
-      nat_ip = var.enable_static_ip ? google_compute_address.static_ip[0].address : null
+      nat_ip       = var.enable_static_ip ? google_compute_address.static_ip[0].address : null
+      network_tier = var.network_tier
     }
   }
 

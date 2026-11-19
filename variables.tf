@@ -82,6 +82,17 @@ variable "enable_static_ip" {
   default     = true
 }
 
+variable "network_tier" {
+  description = "Network service tier for the external IP address: PREMIUM or STANDARD. Applies to both the VM access config and the static IP address."
+  type        = string
+  default     = "PREMIUM"
+
+  validation {
+    condition     = contains(["PREMIUM", "STANDARD"], var.network_tier)
+    error_message = "network_tier must be PREMIUM or STANDARD."
+  }
+}
+
 variable "enable_tcp_443" {
   description = "Allow HTTPS (VPN traffic)"
   type        = bool

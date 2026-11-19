@@ -28,7 +28,8 @@ resource "google_compute_subnetwork" "subnet" {
 }
 
 resource "google_compute_address" "static_ip" {
-  count  = var.enable_static_ip ? 1 : 0
-  name   = "${var.goog_cm_deployment_name}-static-ip"
-  region = var.region
+  count        = var.enable_static_ip ? 1 : 0
+  name         = "${var.goog_cm_deployment_name}-static-ip"
+  region       = var.region
+  network_tier = var.network_tier
 }

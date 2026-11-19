@@ -82,6 +82,17 @@ variable "enable_static_ip" {
   default     = true
 }
 
+variable "network_tier" {
+  description = "Network service tier for the external IP address: PREMIUM or STANDARD. Applies to both the VM access config and the static IP address."
+  type        = string
+  default     = "PREMIUM"
+
+  validation {
+    condition     = contains(["PREMIUM", "STANDARD"], var.network_tier)
+    error_message = "network_tier must be PREMIUM or STANDARD."
+  }
+}
+
 variable "enable_tcp_443" {
   description = "Allow HTTPS (VPN traffic)"
   type        = bool
@@ -134,6 +145,17 @@ variable "tcp_22_source_ranges" {
   description = "Source IP ranges for TCP port 22 traffic"
   type        = string
   default     = ""
+}
+
+variable "activation_key" {
+  description = "Access Server activation key. Leave empty to use the default zero connections license."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[A-Za-z0-9_.+/=-]*$", trimspace(var.activation_key)))
+    error_message = "activation_key must contain only letters, digits, and the symbols _ . + / = -"
+  }
 }
 
 variable "env_vars" {

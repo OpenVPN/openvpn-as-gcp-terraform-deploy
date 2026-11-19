@@ -104,6 +104,10 @@ spec:
         description: Assign a static external IP address to the VM instance. Recommended, especially with 'enable_letsencrypt' - ephemeral IP addresses can change when the instance is stopped and started, invalidating an issued certificate.
         varType: bool
         defaultValue: true
+      - name: network_tier
+        description: "Network service tier for the external IP address: PREMIUM or STANDARD."
+        varType: string
+        defaultValue: PREMIUM
       - name: enable_letsencrypt
         description: Automatically request and install a Let's Encrypt TLS certificate for the instance's public IP address. Requires 'enable_tcp_443' to remain true.
         varType: bool
@@ -138,6 +142,10 @@ spec:
         defaultValue: true
       - name: tcp_22_source_ranges
         description: Source IP ranges for TCP port 22 traffic
+        varType: string
+        defaultValue: ""
+      - name: activation_key
+        description: Access Server activation key. Leave empty to use the default zero connections license.
         varType: string
         defaultValue: ""
       - name: env_vars

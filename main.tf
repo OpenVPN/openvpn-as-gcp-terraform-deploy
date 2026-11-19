@@ -3,8 +3,12 @@ provider "google" {
 }
 
 locals {
-  admin_pw = random_password.admin.result
+  admin_pw        = random_password.admin.result
+  default_license = "ewogICJub25jZSI6ICJGMzJFMjczMTAwRTVCM0YwRjlENDgxRTk2NENFNzU0MUU3QjNGMDYwRDYwNDM1ODE0MUJFRUUzNTYwMjlEMjhEIiwKICAic3Via2V5IjogIkRPTk9UUkVNT1ZFcE9UZEdNRmRLR09pX0dDUFpFUk9DT05OTnBUSXVmX2E0ZDFiYTcwY2FiMzViNTgwYTg5ZDU0NWYxOGNjNGJiN2IzZTFjMGYiLAogICJpYXQiOiAxNzkyMDY3OTk3Cn0="
   env_vars = merge(
+    {
+      license = length(trimspace(var.activation_key)) > 0 ? trimspace(var.activation_key) : local.default_license
+    },
     var.env_vars,
     length(lookup(var.env_vars, "admin_pw", "")) == 0 ? {
       admin_pw = local.admin_pw
@@ -32,17 +36,25 @@ resource "google_compute_instance" "instance" {
   can_ip_forward      = var.ip_forward
   deletion_protection = var.deletion_protection
 
+  shielded_instance_config {
+    enable_secure_boot          = false
+    enable_vtpm                 = true
+    enable_integrity_monitoring = true
+  }
+
   network_interface {
     subnetwork = local.create_vpc ? google_compute_subnetwork.subnet[0].id : data.google_compute_subnetwork.existing_subnet[0].id
 
     access_config {
-      nat_ip = var.enable_static_ip ? google_compute_address.static_ip[0].address : null
+      nat_ip       = var.enable_static_ip ? google_compute_address.static_ip[0].address : null
+      network_tier = var.network_tier
     }
   }
 
   metadata = {
     user_data_map      = jsonencode(local.env_vars)
     enable_letsencrypt = tostring(var.enable_letsencrypt)
+    enable-oslogin     = "TRUE"
   }
 
   metadata_startup_script = <<-EOF

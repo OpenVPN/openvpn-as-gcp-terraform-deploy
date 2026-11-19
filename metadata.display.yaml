@@ -15,6 +15,12 @@ spec:
   ui:
     input:
       variables:
+        activation_key:
+          name: activation_key
+          title: Activation key
+          tooltip: Optional. Subscription key for this Access Server instance. Leave blank to activate the server later from the Admin Web UI.
+          section: access_server_config
+          regexValidation: '^$|^(?:[A-Za-z0-9+/]{4}){24,1023}(?:[A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)$'
         boot_disk_size:
           name: boot_disk_size
           title: Boot disk size in GB
@@ -40,12 +46,22 @@ spec:
           name: enable_letsencrypt
           title: Enable Let's Encrypt certificate for the external IP address
           tooltip: Automatically request a trusted TLS certificate bound to this instance's public IP address. Requires TCP port 443 to stay open (see "Allow HTTPS" below). If the public IP later changes, the certificate must be re-requested manually.
-          section: networking
+          section: access_server_config
         enable_static_ip:
           name: enable_static_ip
           title: Use a static external IP address
           tooltip: Recommended, especially with Let's Encrypt enabled - an ephemeral IP can change when the instance is stopped and started, which invalidates an issued certificate.
           section: networking
+        network_tier:
+          name: network_tier
+          title: Network service tier
+          tooltip: 'Premium (recommended): traffic uses Google''s global private network for most of its path. It gives better speed and lower latency, especially when VPN users connect from many regions or far from this region. Standard: traffic uses the public internet for most of its path. It costs less, and it fits best when most VPN users are close to the region you deploy in. Performance can vary more. Choose Premium if you are not sure. <a href="https://cloud.google.com/network-tiers/docs/overview">Learn more</a>'
+          section: networking
+          enumValueLabels:
+            - label: Premium
+              value: PREMIUM
+            - label: Standard
+              value: STANDARD
         enable_tcp_22:
           name: enable_tcp_22
           title: Allow TCP port 22 (SSH traffic)
@@ -144,5 +160,7 @@ spec:
         - name: boot_disk
           title: Boot Disk
           tooltip: Each instance requires a disk to boot from.
+        - name: access_server_config
+          title: Access Server Configuration
         - name: networking
           title: Networking

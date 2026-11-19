@@ -54,6 +54,7 @@ resource "google_compute_instance" "instance" {
   metadata = {
     user_data_map      = jsonencode(local.env_vars)
     enable_letsencrypt = tostring(var.enable_letsencrypt)
+    enable-oslogin     = "TRUE"
   }
 
   metadata_startup_script = <<-EOF
